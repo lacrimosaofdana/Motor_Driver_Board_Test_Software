@@ -1,0 +1,25 @@
+{% extends 'record.html' %}
+
+{% block form %}
+<tr>
+    <td>{{ result.id }}</td>
+    <td>{{ result.ecurrent }}</td>
+    <td>{{ result.voltage }}</td>
+    <td>{{ result.epower }}</td>
+    <td>{{ result.rev }}</td>
+    {% if result.validate %}
+    <td>是</td>
+    {% else %}
+    <td>否</td>
+    {% endif %}
+    <td>{{ result.test_time }}</td>
+    <td>
+        <form class="inline-form" method="post" action="{{ url_for('delete', id=result.id) }}">
+            <button class="btn btn-danger"
+                    style="--bs-btn-padding-y: .025rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"
+                    onclick="return confirm('testing_devices.html确定要删除吗?')">删除
+            </button> <!-- 删除按钮列 -->
+        </form>
+    </td>
+</tr>
+{% endblock %}

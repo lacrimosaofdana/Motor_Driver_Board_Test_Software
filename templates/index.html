@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+    <div class="px-4 py-5 my-5 text-center">
+        <img class="d-block mx-auto mb-4" src="{{ url_for('static', filename='images/bootstrap-logo.svg') }}" alt=""
+             width="72" height="57">
+        <h1 class="display-5 fw-bold">季丰电机驱动板测试软件</h1>
+        <div class="col-lg-6 mx-auto">
+            <p class="lead mb-4">请从左侧菜单栏选择您需要的功能</p>
+        </div>
+    </div>
+</main>
+{% endblock %}
