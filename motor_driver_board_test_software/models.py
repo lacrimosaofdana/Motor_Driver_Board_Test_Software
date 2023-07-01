@@ -1,9 +1,10 @@
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
-from datetime import datetime
 
 from motor_driver_board_test_software import db
 
+
+# 用户类
 class User(db.Model, UserMixin):
     __tablename__ = 'Users'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -17,6 +18,8 @@ class User(db.Model, UserMixin):
     def validate_password(self, password):
         return check_password_hash(self.password_hash, password)
 
+
+# 配置类
 class configuration(db.Model):
     __tablename__ = 'configuration'
     id = db.Column(db.Integer, primary_key=True, default=1)
@@ -29,6 +32,8 @@ class configuration(db.Model):
     tl = db.Column(db.Float, default=0.0)
     th = db.Column(db.Float, default=0.0)
 
+
+# 测试结果类
 class test_result(db.Model):
     __tablename__ = 'results'
     id = db.Column(db.String(40), primary_key=True)  # 主键
@@ -41,6 +46,8 @@ class test_result(db.Model):
     test_console = db.Column(db.String(20))
     test_time = db.Column(db.DateTime)
 
+
+    # 将结果转换为字典
     def to_dict(self):
         return {
             'id': self.id,
@@ -48,6 +55,6 @@ class test_result(db.Model):
             'voltage': self.voltage,
             'epower': self.epower,
             'rev': self.rev,
-            'validate': '是' if self.validate else '否',
+            'validate': True if self.validate else False,
             'test_time': self.test_time,
         }

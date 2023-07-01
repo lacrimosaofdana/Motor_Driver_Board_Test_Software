@@ -2,11 +2,11 @@ import click
 from motor_driver_board_test_software import app, db
 from motor_driver_board_test_software.models import User
 
+# 创建管理员账号
 @app.cli.command()
 @click.option('--username', prompt=True, help='The username used to login.')
 @click.option('--password', prompt=True, hide_input=True, confirmation_prompt=True, help='The password used to login.')
 def admin(username, password):
-    """创建管理员账号"""
     db.create_all()
 
     existing_user = User.query.filter_by(username=username).first()
