@@ -38,17 +38,20 @@
 
 
     <!-- Custom styles for this template -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='dashboard.css') }}" type="text/css">
-    <link href="{{ url_for('static', filename='heroes.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}" type="text/css">
+    <link href="{{ url_for('static', filename='css/heroes.css') }}" rel="stylesheet">
 </head>
 <body>
 
 <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
     <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">季丰电机驱动板测试软件</a>
-    <div class="navbar-nav">
-        <div class="nav-item text-nowrap">
-            <a class="nav-link px-3" href="{{ url_for('logout') }}">登出</a>
-        </div>
+    <div class="col-md-3 text-end">
+        {% if current_user.is_authenticated %}
+        <a class="btn btn-outline-primary me-1 px-3" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .05rem; --bs-btn-font-size: .95rem;" href="{{ url_for('logout') }}">登出</a>
+        {% else %}
+        <a class="btn btn-outline-primary me-1 px-3" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .05rem; --bs-btn-font-size: .95rem;" href="{{ url_for('login') }}">登录</a>
+        <a class="btn btn-primary me-1 px-3" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .05rem; --bs-btn-font-size: .95rem;" href="{{ url_for('signup') }}">注册</a>
+        {% endif %}
     </div>
 </header>
 
@@ -69,7 +72,7 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url_for('config') }}">
                             <span data-feather="file-text"></span>
-                            配置信息
+                            配置
                         </a>
                     </li>
                     <li class="nav-item">
@@ -90,7 +93,7 @@
                 </ul>
             </div>
         </nav>
-        <div class="col-md-9 ms-sm-auto col-lg-10 px-md-4 overflow-auto">
+        <div class="col-md-6 ms-sm-auto col-lg-10 px-md-4 overflow-auto">
             {% for message in get_flashed_messages(with_categories=True) %}
             <div class="alert alert-{{ message[0] }}" role="alert">
                 {{ message[1] }}
@@ -112,6 +115,6 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"
         integrity="sha384-zNy6FEbO50N+Cg5wap8IKA4M/ZnLJgzc6w2NqACZaK0u0FXfOWRRJOnQtpZun8ha"
         crossorigin="anonymous"></script>
-<script rel="stylesheet" src="{{ url_for('static',filename='dashboard.js') }}"></script>
+<script rel="stylesheet" src="{{ url_for('static',filename='js/dashboard.js') }}"></script>
 </body>
 </html>

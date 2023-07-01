@@ -1,7 +1,6 @@
 {% extends 'record.html' %}
 
 {% block form %}
-{% for result in results %}
 <tr>
     <td>{{ result.id }}</td>
     <td>{{ result.ecurrent }}</td>
@@ -13,15 +12,20 @@
     {% else %}
     <td>否</td>
     {% endif %}
+    <td>{{ result.test_user }}</td>
+    <td>{{ result.test_console }}</td>
     <td>{{ result.test_time }}</td>
     <td>
+        {% if current_user.admin_status %}
         <form class="inline-form" method="post" action="{{ url_for('delete', id=result.id) }}">
             <button class="btn btn-danger"
                     style="--bs-btn-padding-y: .025rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"
-                    onclick="return confirm('testing_devices.html确定要删除吗?')">删除
+                    onclick="return confirm('确定要删除吗?')">删除
             </button> <!-- 删除按钮列 -->
         </form>
+        {% else %}
+        <button type="button" class="btn btn-secondary" style="--bs-btn-padding-y: .025rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;" disabled>需要管理员权限</button>
+        {% endif %}
     </td>
 </tr>
-{% endfor %}
 {% endblock %}

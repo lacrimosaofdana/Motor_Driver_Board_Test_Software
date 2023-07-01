@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+    <article class="my-3" id="config">
+        <div class="bd-heading sticky-xl-top align-self-start mt-5 mb-3 mt-xl-0 mb-xl-2">
+            <h2>配置</h2>
+        </div>
+        <div class="card col-md-8">
+            <h5 class="card-header text-center">配置信息</h5>
+            <div class="card-body">
+                <table class="table table-striped-columns text-center fs-5">
+                    <thead>
+                    <tr>
+                        <th scope="col">电流/A</th>
+                        <th scope="col">电压/V</th>
+                        <th scope="col">功率/W</th>
+                        <th scope="col">转速/PCS</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>{{ test_config.al }} ~ {{ test_config.ah }}</td>
+                        <td>{{ test_config.vl }} ~ {{ test_config.vh }}</td>
+                        <td>{{ test_config.wl }} ~ {{ test_config.wh }}</td>
+                        <td>{{ test_config.tl }} ~ {{ test_config.th }}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div>
+            <div class="bd-example">
+                <form class="row g-3 p-3 col-md-8" method="post">
+
+                    <label for="ammeter_low" class="form-label mb-0">电流表</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" name="ammeter_low" id="ammeter_low">
+                        <span class="input-group-text">A</span>
+                        <span class="input-group-text">～</span>
+                        <input type="text" class="form-control" name="ammeter_high" id="ammeter_high">
+                        <span class="input-group-text">A</span>
+                    </div>
+
+                    <label for="voltmeter_low" class="form-label mb-0">电压表</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" name="voltmeter_low" id="voltmeter_low">
+                        <span class="input-group-text">V</span>
+                        <span class="input-group-text">～</span>
+                        <input type="text" class="form-control" name="voltmeter_high" id="voltmeter_high">
+                        <span class="input-group-text">V</span>
+                    </div>
+
+                    <label for="wattmeter_low" class="form-label mb-0">功率表</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" name="wattmeter_low" id="wattmeter_low">
+                        <span class="input-group-text">W</span>
+                        <span class="input-group-text">～</span>
+                        <input type="text" class="form-control" name="wattmeter_high" id="wattmeter_high">
+                        <span class="input-group-text">W</span>
+                    </div>
+
+                    <label for="tachometer_low" class="form-label mb-0">转速表</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" name="tachometer_low" id="tachometer_low">
+                        <span class="input-group-text">PCS</span>
+                        <span class="input-group-text">～</span>
+                        <input type="text" class="form-control" name="tachometer_high" id="tachometer_high">
+                        <span class="input-group-text">PCS</span>
+                    </div>
+
+                    <div class="col-12">
+                        <button class="btn btn-primary" name="submit" type="submit">确认</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </article>
+</main>
+{% endblock %}

@@ -1,0 +1,404 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">测试</h1>
+        <div class="btn-toolbar mb-2 mb-md-0">
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="card-title">1号测试控制台</h2>
+
+                    <div class="my-3 p-3 bg-body rounded shadow-sm">
+                        <h3 class="border-bottom pb-2 mb-0">测试流程</h3>
+                        <div class="d-flex text-muted pt-3">
+                            <div class="spinner-grow flex-shrink-0 me-2" role="status" id="message1"></div>
+
+
+                            <p class="pb-3 mb-0 small lh-sm">
+                                <strong class="d-block text-gray-dark">读取条码信息</strong>
+                                请用二维码扫码读取驱动板的条码信息
+                                <i class="bi bi-0-square"></i>
+                            </p>
+                        </div>
+                        <div class="d-flex text-muted pt-3">
+                            <div class="spinner-grow flex-shrink-0 me-2" role="status" id="message2"></div>
+                            <p class="pb-3 mb-0 small lh-sm">
+                                <strong class="d-block text-gray-dark">读取仪表数据</strong>
+                                请上电后开始测试
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="my-3 p-3 bg-body rounded shadow-sm">
+                        <h3 class="border-bottom pb-2 mb-0">测试结果</h3>
+                        <div class="table-responsive" id="message3">
+                            <table class="table table-striped table-sm">
+                                <thead>
+                                <tr>
+                                    <th scope="col">条码信息</th>
+                                    <th scope="col">电流/A</th>
+                                    <th scope="col">电压/V</th>
+                                    <th scope="col">功率/W</th>
+                                    <th scope="col">转速/PCS</th>
+                                    <th scope="col">测试时间</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>～</td>
+                                    <td>～</td>
+                                    <td>～</td>
+                                    <td>～</td>
+                                    <td>～</td>
+                                    <td>～</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="d-flex justify-content-center align-items-center" >
+                          <div class="table-responsive" id="message4">
+                            <h1 class="text-center"><span class="badge text-bg-warning rounded-pill fs-1"><i class="bi bi-question-circle"></i> 无结果</span></h1>
+                          </div>
+                        </div>
+                    </div>
+
+
+                    <div class="d-flex justify-content-center align-items-center">
+                      <button id="button1" class="btn btn-primary btn-lg" style="--bs-btn-padding-y: .5rem; --bs-btn-padding-x: 3.5rem; --bs-btn-font-size: 2.5rem;">开始</button>
+                    </div>
+
+                    <script type="text/javascript"
+                            src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+                    <script>
+                    var worker1;
+
+                    $(document).ready(function () {
+                        $('#button1').click(function () {
+                            if (confirm('开始扫码吗?')) {
+                                if (worker1) {
+                                  worker1.terminate();
+                                }
+
+                                // 点击确认按钮时，执行AJAX请求
+                                // 点击按钮时，显示"读取中"信息
+                                $('#message1').replaceWith('<div class="spinner-border flex-shrink-0 me-2" role="status" aria-hidden="true" id="message1"></div>');
+                                // 清空消息容器
+                                $('#message2').replaceWith('<div class="spinner-grow flex-shrink-0 me-2" role="status" id="message2"></div>');
+                                var messageHtml = `
+                                                        <div class="table-responsive">
+                                                        <table class="table table-striped table-sm">
+                                                        <thead>
+                                                        <tr>
+                                                            <th scope="col">条码信息</th>
+                                                            <th scope="col">电流/A</th>
+                                                            <th scope="col">电压/V</th>
+                                                            <th scope="col">功率/W</th>
+                                                            <th scope="col">转速/PCS</th>
+                                                            <th scope="col">测试时间</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        <tr>
+                                                            <td>～</td>
+                                                            <td>～</td>
+                                                            <td>～</td>
+                                                            <td>～</td>
+                                                            <td>～</td>
+                                                            <td>～</td>
+                                                        </tr>
+                                                        </tbody>
+                                                        </table>
+                                                        </div>
+                                                    `;
+                                $('#message3').html(messageHtml);
+                                $('#message4').html('<h1 class="text-center"><span class="badge text-bg-warning rounded-pill fs-1"><i class="bi bi-question-circle"></i> 无结果</span></h1>');
+                                worker1 = new Worker("{{ url_for('static', filename='js/worker.js') }}");
+                                worker1.postMessage({ type: 'type1', data: 'Console 1' });
+
+                                worker1.addEventListener('message', function(e) {
+                                    var data = e.data;
+                                    // 检查消息类型并执行相应操作
+                                    if (data.type === 'type1') {
+                                        // 处理类型1的消息
+                                        var response = data.data;
+                                        var messageHtml = `
+                                                        <div class="table-responsive">
+                                                        <table class="table table-striped table-sm">
+                                                        <thead>
+                                                        <tr>
+                                                            <th scope="col">条码信息</th>
+                                                            <th scope="col">电流/A</th>
+                                                            <th scope="col">电压/V</th>
+                                                            <th scope="col">功率/W</th>
+                                                            <th scope="col">转速/PCS</th>
+                                                            <th scope="col">测试时间</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        <tr>
+                                                            <td>${response}</td>
+                                                            <td>～</td>
+                                                            <td>～</td>
+                                                            <td>～</td>
+                                                            <td>～</td>
+                                                            <td>～</td>
+                                                        </tr>
+                                                        </tbody>
+                                                        </table>
+                                                        </div>
+                                                    `;
+                                        $('#message3').html(messageHtml);
+                                        $('#message1').replaceWith('<div class="spinner-grow text-success flex-shrink-0 me-2" role="status" id="message1"></div>');
+                                        $('#message2').replaceWith('<div class="spinner-border flex-shrink-0 me-2" role="status" aria-hidden="true" id="message2"></div>');
+                                        worker1.postMessage({ type: 'type2', data: 'data for type2' });
+                                    } else if (data.type === 'type2') {
+                                        // 处理类型2的消息
+                                        var response = data.data;
+                                        var messageHtml = `
+                                                    <div class="table-responsive">
+                                                    <table class="table table-striped table-sm">
+                                                    <thead>
+                                                    <tr>
+                                                        <th scope="col">条码信息</th>
+                                                        <th scope="col">电流/A</th>
+                                                        <th scope="col">电压/V</th>
+                                                        <th scope="col">功率/W</th>
+                                                        <th scope="col">转速/PCS</th>
+                                                        <th scope="col">测试时间</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <tr>
+                                                        <td>${response.id}</td>
+                                                        <td>${response.ecurrent}</td>
+                                                        <td>${response.voltage}</td>
+                                                        <td>${response.epower}</td>
+                                                        <td>${response.rev}</td>
+                                                        <td>${response.test_time}</td>
+                                                    </tr>
+                                                    </tbody>
+                                                    </table>
+                                                    </div>
+                                                `;
+                                        $('#message3').html(messageHtml);
+                                        $('#message2').replaceWith('<div class="spinner-grow text-success flex-shrink-0 me-2" role="status" id="message2"></div>');
+                                        if (response.validate) {
+                                            $('#message4').html('<h1><span class="badge text-bg-success rounded-pill fs-1"><i class="bi bi-check-circle"></i> 通过</span></h1>');
+                                        } else {
+                                            $('#message4').html('<h1><span class="badge text-bg-danger rounded-pill fs-1"><i class="bi bi-x-circle"></i> 未通过</span></h1>');
+                                        }
+                                    }
+                                });
+                            }
+                        });
+                    });
+                    </script>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="card-title">2号测试控制台</h2>
+
+                    <div class="my-3 p-3 bg-body rounded shadow-sm">
+                        <h3 class="border-bottom pb-2 mb-0">测试流程</h3>
+                        <div class="d-flex text-muted pt-3">
+                            <div class="spinner-grow flex-shrink-0 me-2" role="status" id="message5"></div>
+
+
+                            <p class="pb-3 mb-0 small lh-sm">
+                                <strong class="d-block text-gray-dark">读取条码信息</strong>
+                                请用二维码扫码读取驱动板的条码信息
+                                <i class="bi bi-0-square"></i>
+                            </p>
+                        </div>
+                        <div class="d-flex text-muted pt-3">
+                            <div class="spinner-grow flex-shrink-0 me-2" role="status" id="message6"></div>
+                            <p class="pb-3 mb-0 small lh-sm">
+                                <strong class="d-block text-gray-dark">读取仪表数据</strong>
+                                请上电后开始测试
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="my-3 p-3 bg-body rounded shadow-sm">
+                        <h3 class="border-bottom pb-2 mb-0">测试结果</h3>
+                        <div class="table-responsive" id="message7">
+                            <table class="table table-striped table-sm">
+                                <thead>
+                                <tr>
+                                    <th scope="col">条码信息</th>
+                                    <th scope="col">电流/A</th>
+                                    <th scope="col">电压/V</th>
+                                    <th scope="col">功率/W</th>
+                                    <th scope="col">转速/PCS</th>
+                                    <th scope="col">测试时间</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>～</td>
+                                    <td>～</td>
+                                    <td>～</td>
+                                    <td>～</td>
+                                    <td>～</td>
+                                    <td>～</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="d-flex justify-content-center align-items-center" >
+                          <div class="table-responsive" id="message8">
+                            <h1 class="text-center"><span class="badge text-bg-warning rounded-pill fs-1"><i class="bi bi-question-circle"></i> 无结果</span></h1>
+                          </div>
+                        </div>
+                    </div>
+
+
+                    <div class="d-flex justify-content-center align-items-center">
+                      <button id="button2" class="btn btn-primary btn-lg" style="--bs-btn-padding-y: .5rem; --bs-btn-padding-x: 3.5rem; --bs-btn-font-size: 2.5rem;">开始</button>
+                    </div>
+
+
+                    <script type="text/javascript"
+                            src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+                    <script>
+                    var worker2;
+
+                    $(document).ready(function () {
+                        $('#button2').click(function () {
+                            if (confirm('开始扫码吗?')) {
+                                if (worker2) {
+                                  worker2.terminate();
+                                }
+
+                                // 点击确认按钮时，执行AJAX请求
+                                // 点击按钮时，显示"读取中"信息
+                                $('#message5').replaceWith('<div class="spinner-border flex-shrink-0 me-2" role="status" aria-hidden="true" id="message5"></div>');
+                                // 清空消息容器
+                                $('#message6').replaceWith('<div class="spinner-grow flex-shrink-0 me-2" role="status" id="message6"></div>');
+                                var messageHtml = `
+                                                        <div class="table-responsive">
+                                                        <table class="table table-striped table-sm">
+                                                        <thead>
+                                                        <tr>
+                                                            <th scope="col">条码信息</th>
+                                                            <th scope="col">电流/A</th>
+                                                            <th scope="col">电压/V</th>
+                                                            <th scope="col">功率/W</th>
+                                                            <th scope="col">转速/PCS</th>
+                                                            <th scope="col">测试时间</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        <tr>
+                                                            <td>～</td>
+                                                            <td>～</td>
+                                                            <td>～</td>
+                                                            <td>～</td>
+                                                            <td>～</td>
+                                                            <td>～</td>
+                                                        </tr>
+                                                        </tbody>
+                                                        </table>
+                                                        </div>
+                                                    `;
+                                $('#message7').html(messageHtml);
+                                $('#message8').html('<h1 class="text-center"><span class="badge text-bg-warning rounded-pill fs-1"><i class="bi bi-question-circle"></i> 无结果</span></h1>');
+                                worker2 = new Worker("{{ url_for('static', filename='js/worker.js') }}");
+                                worker2.postMessage({ type: 'type1', data: 'Console 2' });
+
+                                worker2.addEventListener('message', function(e) {
+                                    var data = e.data;
+                                    // 检查消息类型并执行相应操作
+                                    if (data.type === 'type1') {
+                                        // 处理类型1的消息
+                                        var response = data.data;
+                                        var messageHtml = `
+                                                            <div class="table-responsive">
+                                                            <table class="table table-striped table-sm">
+                                                            <thead>
+                                                            <tr>
+                                                                <th scope="col">条码信息</th>
+                                                                <th scope="col">电流/A</th>
+                                                                <th scope="col">电压/V</th>
+                                                                <th scope="col">功率/W</th>
+                                                                <th scope="col">转速/PCS</th>
+                                                                <th scope="col">测试时间</th>
+                                                            </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                            <tr>
+                                                                <td>${response}</td>
+                                                                <td>～</td>
+                                                                <td>～</td>
+                                                                <td>～</td>
+                                                                <td>～</td>
+                                                                <td>～</td>
+                                                            </tr>
+                                                            </tbody>
+                                                            </table>
+                                                            </div>
+                                                        `;
+                                        $('#message7').html(messageHtml);
+                                        $('#message5').replaceWith('<div class="spinner-grow text-success flex-shrink-0 me-2" role="status" id="message5"></div>');
+                                        $('#message6').replaceWith('<div class="spinner-border flex-shrink-0 me-2" role="status" aria-hidden="true" id="message6"></div>');
+                                        worker2.postMessage({ type: 'type2', data: 'data for type2' });
+                                    } else if (data.type === 'type2') {
+                                        // 处理类型2的消息
+                                        var response = data.data;
+                                        var messageHtml = `
+                                                    <div class="table-responsive">
+                                                    <table class="table table-striped table-sm">
+                                                    <thead>
+                                                    <tr>
+                                                        <th scope="col">条码信息</th>
+                                                        <th scope="col">电流/A</th>
+                                                        <th scope="col">电压/V</th>
+                                                        <th scope="col">功率/W</th>
+                                                        <th scope="col">转速/PCS</th>
+                                                        <th scope="col">测试时间</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <tr>
+                                                        <td>${response.id}</td>
+                                                        <td>${response.ecurrent}</td>
+                                                        <td>${response.voltage}</td>
+                                                        <td>${response.epower}</td>
+                                                        <td>${response.rev}</td>
+                                                        <td>${response.test_time}</td>
+                                                    </tr>
+                                                    </tbody>
+                                                    </table>
+                                                    </div>
+                                                `;
+                                        $('#message7').html(messageHtml);
+                                        $('#message6').replaceWith('<div class="spinner-grow text-success flex-shrink-0 me-2" role="status" id="message6"></div>');
+                                        if (response.validate) {
+                                            $('#message8').html('<h1><span class="badge text-bg-success rounded-pill fs-1"><i class="bi bi-check-circle"></i> 通过</span></h1>');
+                                        } else {
+                                            $('#message8').html('<h1><span class="badge text-bg-danger rounded-pill fs-1"><i class="bi bi-x-circle"></i> 未通过</span></h1>');
+                                        }
+                                    }
+                                });
+                            }
+                        });
+                    });
+                    </script>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</main>
+{% endblock %}
