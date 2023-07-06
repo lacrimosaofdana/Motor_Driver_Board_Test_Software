@@ -1,10 +1,10 @@
 self.addEventListener('message', function(e) {
     var message = e.data;
+    var console;
     // 检查消息类型并执行相应操作
     if (message.type === 'type1') {
         // 处理类型1的消息
         // 在这里执行 AJAX 请求
-        var console;
         if (message.data === 'Console 1') {
             console = message.data;
         } else if (message.data === 'Console 2') {
@@ -24,7 +24,12 @@ self.addEventListener('message', function(e) {
     } else if (message.type === 'type2') {
         // 处理类型2的消息
         // 在这里执行 AJAX 请求
-        fetch('/board_test', {
+        if (message.data === 'Console 1') {
+            console = message.data;
+        } else if (message.data === 'Console 2') {
+            console = message.data;
+        }
+        fetch('/board_test/' + console, {
             method: 'POST'
         })
         .then(response => response.json())

@@ -156,7 +156,7 @@
                                         $('#message3').html(messageHtml);
                                         $('#message1').replaceWith('<div class="spinner-grow text-success flex-shrink-0 me-2" role="status" id="message1"></div>');
                                         $('#message2').replaceWith('<div class="spinner-border flex-shrink-0 me-2" role="status" aria-hidden="true" id="message2"></div>');
-                                        worker1.postMessage({ type: 'type2', data: 'data for type2' });
+                                        worker1.postMessage({ type: 'type2', data: 'Console 1' });
                                     } else if (data.type === 'type2') {
                                         // 处理类型2的消息
                                         var response = data.data;
@@ -351,7 +351,7 @@
                                         $('#message7').html(messageHtml);
                                         $('#message5').replaceWith('<div class="spinner-grow text-success flex-shrink-0 me-2" role="status" id="message5"></div>');
                                         $('#message6').replaceWith('<div class="spinner-border flex-shrink-0 me-2" role="status" aria-hidden="true" id="message6"></div>');
-                                        worker2.postMessage({ type: 'type2', data: 'data for type2' });
+                                        worker2.postMessage({ type: 'type2', data: 'Console 2' });
                                     } else if (data.type === 'type2') {
                                         // 处理类型2的消息
                                         var response = data.data;

@@ -33,6 +33,19 @@ class configuration(db.Model):
     th = db.Column(db.Float, default=0.0)
 
 
+# 测量表参数类
+class modbus_data(db.Model):
+    __tablename__ = 'modbus_data'
+    id = db.Column(db.Integer, primary_key=True)
+    port_data = db.Column(db.String(40))
+    baudrate = db.Column(db.Float, default=9600)
+    bytesize = db.Column(db.Integer, default=8)
+    parity = db.Column(db.String(20), default='N')
+    stopbits = db.Column(db.Integer, default=1)
+    address = db.Column(db.Integer)
+    count = db.Column(db.Integer, default=4)
+    slave_address = db.Column(db.Integer)
+
 # 测试结果类
 class test_result(db.Model):
     __tablename__ = 'results'
