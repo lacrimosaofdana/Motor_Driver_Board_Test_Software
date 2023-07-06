@@ -12,7 +12,7 @@ MacOS 13.3
 
 以下安装流程皆为命令行操作
 
-首先进入MySQL Server的bin目录下，然后输入命令和密码, macos一般在/usr/local/mysql/bin下，windows找到对应bin目录操作相同
+首先进入MySQL Server的bin目录下，然后输入命令和密码, MacOS一般在/usr/local/mysql/bin下，windows找到对应bin目录操作相同
 
 ```
 $ mysql -u root -p
@@ -46,7 +46,7 @@ insert into modbus_data values
 
 首先确保您进入了当前项目的目录，然后创建并激活当前的虚拟python环境，安装所有需求的python包。
 
-Macos和Linux如下操作：
+MacOS和Linux如下操作：
 
 ```
 $ python3 -m venv venv
@@ -67,6 +67,17 @@ $ venv/Scripts/activate
 ```
 (venv) $ flask run
 * Running on http://127.0.0.1:5000/
+```
+
+程序大部分功能需要用户登录，默认数据库中并不存在账号，请使用注册界面自行注册；如需注册管理员账号来删除部分记录，请用如下命令行：
+
+```
+(venv) $ flask admin
+Username: 
+Password: 
+Repeat for confirmation: 
+创建用户...
+Done.
 ```
 
 如有需求，可以重新生成requirements.txt文件来保存项目所需要的包，如果已存在requirements.txt，可以在指令后添加--force
