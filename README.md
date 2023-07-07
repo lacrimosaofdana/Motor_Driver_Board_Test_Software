@@ -31,7 +31,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysqs://username:password@127.0
 
 请确保用户名username，密码password和数据库名database_name修改为你自己的值。
 
-目前修改参数请在test_schema.sql中完成，修改第二列端口port的数值
+目前修改参数请在test_schema.sql中完成，修改第二列端口port的数值，第9列从机id
 ```
 insert into modbus_data values
 (1, 'COM1', 9600, 8, 'N', 1, 0xB9, 4, 1),
